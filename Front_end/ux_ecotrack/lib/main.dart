@@ -52,13 +52,15 @@ class _AuthScreenState extends State<AuthScreen>
   final _regPhoneController = TextEditingController();
   final _regPasswordController = TextEditingController();
   final _regConfirmPasswordController = TextEditingController();
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   String? _errorMessage; // Hiển thị thông báo lỗi
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
   }
 
   void _showError(String? message) {
@@ -232,19 +234,41 @@ class _AuthScreenState extends State<AuthScreen>
           const SizedBox(height: 12),
           TextField(
             controller: _regPasswordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.lock_outline),
+            obscureText: !_isPasswordVisible,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.lock_outline),
               hintText: 'Mật khẩu',
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+              ),
             ),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _regConfirmPasswordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.lock_outline),
+            obscureText: !_isConfirmPasswordVisible,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.lock_outline),
               hintText: 'Xác nhận mật khẩu',
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isConfirmPasswordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                  });
+                },
+              ),
             ),
           ),
           const SizedBox(height: 8),
